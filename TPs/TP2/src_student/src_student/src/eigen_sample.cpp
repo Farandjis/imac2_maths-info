@@ -3,6 +3,7 @@
 #include <Eigen/Dense>
 #include <chrono>
 
+void exo2_q6();
 
 double dot_product(const Eigen::VectorXd &v1, const Eigen::VectorXd &v2)
 {
@@ -90,8 +91,43 @@ int main()
 
     std::cout << "dot d'Eigen : " << x1.dot(x2) << std::endl;
 
+    exo2_q6();
 
   return 0;
+}
+
+void exo2_q6()
+{
+    const unsigned int iter = 10000;
+    auto start = std :: chrono :: steady_clock :: now (); // on lance le chrono ?
+    for ( unsigned int i =0; i < iter ; ++ i )
+    {
+        // on calcul iter fois ma fonction
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        srand (seed);
+        Eigen::VectorXd x1 = Eigen::VectorXd::Random(10000);
+        Eigen::VectorXd x2 = Eigen::VectorXd::Random(10000);
+        double res = dot_product(x1, x2);
+    }
+    auto end = std::chrono::steady_clock::now(); // fin du chrono
+    std :: chrono::duration<double> elapsed_seconds = end - start ;
+    std :: cout << " elapsed time : " << elapsed_seconds . count () << " s " << std :: endl ;
+
+
+
+    start = std::chrono::steady_clock::now(); // on lance le chrono ?
+    for ( unsigned int i =0; i < iter ; ++ i )
+    {
+        // on calcul iter fois ma fonction
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        srand (seed);
+        Eigen::VectorXd x1 = Eigen::VectorXd::Random(10000);
+        Eigen::VectorXd x2 = Eigen::VectorXd::Random(10000);
+        double res = x1.dot(x2);
+    }
+    end = std::chrono::steady_clock::now(); // fin du chrono
+    elapsed_seconds = end - start ;
+    std::cout << " elapsed time : " << elapsed_seconds.count () << " s " << std :: endl ;
 }
 
 
