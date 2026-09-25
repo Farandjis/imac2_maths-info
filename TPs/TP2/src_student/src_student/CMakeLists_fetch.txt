@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 3.15)
+
+project(eigen_sample LANGUAGES C CXX)
+
+include(FetchContent)
+
+# Try to find Eigen3 first
+find_package(Eigen3 QUIET)
+
+if(NOT Eigen3_FOUND)
+    message(STATUS "Eigen3 not found, fetching from GitLab... (can be long)")
+    FetchContent_Declare(
+        Eigen3
+        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+        GIT_TAG 3.4.0
+    )
+    FetchContent_MakeAvailable(Eigen3)
+endif()
+
+# Files to compile
+add_executable(eigen_sample src/eigen_sample.cpp)
+
+# Compilation options
+target_compile_features(eigen_sample PRIVATE cxx_std_11) # use at least C++11
+if (MSVC)
+    target_compile_options(eigen_sample PRIVATE /W3)
+else()
+    target_compile_options(eigen_sample PRIVATE -Wall -Wextra -Wpedantic -pedantic-errors)
+endif()
+
+# Link Eigen properly
+target_link_libraries(eigen_sample PRIVATE Eigen3::Eigen)
