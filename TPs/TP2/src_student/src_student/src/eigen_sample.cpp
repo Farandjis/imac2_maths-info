@@ -4,6 +4,20 @@
 #include <chrono>
 
 
+double dot_product(const Eigen::VectorXd &v1, const Eigen::VectorXd &v2)
+{
+    assert(v1.size() == v2.size());
+
+    double result = 0;
+    for (int i = 0; i < v1.size(); i++)
+    {
+        result += v1(i) * v2(i);
+    }
+
+    return result;
+
+}
+
 int main()
 {
   // build a seed
@@ -56,6 +70,18 @@ int main()
   // print samples
   std::cout << "A + 2*A :\n" << A + 2*A << std::endl << std::endl;
   std::cout << "A * B :\n" << A * B << std::endl << std::endl;
+
+
+    Eigen::VectorXd vA(5);
+    vA << 1, 2, 3, 4, 5;
+
+    Eigen::VectorXd vB(5);
+    vB << 1, 2, 3, 4, 5;
+
+    double res = dot_product(vA, vB);
+    std::cout << "res : " << res << std::endl;
+    std::cout << "dot d'Eigen : " << vA.dot(vB) << std::endl;
+
 
   return 0;
 }

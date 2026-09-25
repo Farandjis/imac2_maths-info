@@ -1,0 +1,9 @@
+exo 2, 1 : selon gemini
+    Pour effectuer un produit scalaire, la seule condition fondamentale est de disposer
+    de deux vecteurs appartenant au même espace vectoriel euclidien (ou préhilbertien réel),
+    c'est-à-dire un espace muni d'une structure géométrique permettant de mesurer des longueurs
+    et des angles (comme le plan ou l'espace usuel
+
+
+
+3. On obtient le même résultat
