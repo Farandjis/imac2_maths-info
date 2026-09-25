@@ -83,6 +83,14 @@ int main()
     std::cout << "dot d'Eigen : " << vA.dot(vB) << std::endl;
 
 
+    unsigned seed2 = std::chrono::system_clock::now().time_since_epoch().count();
+    srand (seed2);
+    Eigen::VectorXd x1 = Eigen::VectorXd::Random(10000);
+    Eigen::VectorXd x2 = Eigen::VectorXd::Random(10000);
+
+    std::cout << "dot d'Eigen : " << x1.dot(x2) << std::endl;
+
+
   return 0;
 }
 

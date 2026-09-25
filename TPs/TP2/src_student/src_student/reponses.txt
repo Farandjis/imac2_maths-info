@@ -7,3 +7,6 @@ exo 2, 1 : selon gemini
 
 
 3. On obtient le même résultat
+
+5. je pensais à du O(2n) vu qu'on gère de listes, mais en réalité, nous avons qu'une seule
+boucle fort, donc on parcours une seule fois une liste de taille n : c'est du O(n)
