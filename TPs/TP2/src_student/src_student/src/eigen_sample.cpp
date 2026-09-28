@@ -4,6 +4,7 @@
 #include <chrono>
 
 void exo2_q6();
+void exo3_q2();
 
 double dot_product(const Eigen::VectorXd &v1, const Eigen::VectorXd &v2)
 {
@@ -16,6 +17,70 @@ double dot_product(const Eigen::VectorXd &v1, const Eigen::VectorXd &v2)
     }
 
     return result;
+
+}
+
+Eigen::MatrixXd matrix_product(const Eigen::MatrixXd &m1, const Eigen::MatrixXd &m2)
+{
+    Eigen::MatrixXd A;
+    Eigen::MatrixXd B;
+    if (m1.cols() > m2.cols())
+    {
+        // si m1 a plus de colonnes que m2, dans ce cas, m2 a sûrement ce nombre de ligne
+        assert(m1.cols() == m2.rows()); // on test si c'est le cas, sinon, KO
+        std::cout << "poire" << std::endl;
+
+
+        A = m2;
+        B = m1;
+
+    }
+    else
+    {
+        // sinon, c'est le contraire
+        assert(m2.cols() == m1.rows());
+        std::cout << "pomme" << std::endl;
+
+        A = m1;
+        B = m2;
+    }
+
+    Eigen::MatrixXd res = Eigen::MatrixXd(B.cols(), A.rows());
+
+
+
+    // on parcourt les colonnes de M2
+    for (int i = 0; i < B.cols(); i++)
+    {
+
+        // on parcourt les lignes de M1
+        for (int j = 0; j < A.rows(); j++)
+        {
+
+            double resCase = 0;
+
+            // on va calculer le nombre pour l'emplacement res
+            for (int k = 0; k < A.cols(); k++)
+            {
+                resCase += A(j, k) * B(k, i);
+                // std::cout << m1(j, k) << " --- " << m2(k, i) << std::endl;
+            }
+
+            res(j, i) = resCase;
+        }
+    }
+
+    std::cout << res << std::endl;
+
+
+
+    /*
+    std::cout << m1 << std::endl << std::endl;
+    std::cout << m2 << std::endl;
+    */
+
+
+
 
 }
 
@@ -91,7 +156,8 @@ int main()
 
     std::cout << "dot d'Eigen : " << x1.dot(x2) << std::endl;
 
-    exo2_q6();
+    // exo2_q6();
+    exo3_q2();
 
   return 0;
 }
@@ -128,6 +194,23 @@ void exo2_q6()
     end = std::chrono::steady_clock::now(); // fin du chrono
     elapsed_seconds = end - start ;
     std::cout << " elapsed time : " << elapsed_seconds.count () << " s " << std :: endl ;
+}
+
+
+void exo3_q2()
+{
+    Eigen::MatrixXd B(2, 3);
+    B << 1, 2, 3,
+         3, 4, 5;
+
+    Eigen::MatrixXd A(3, 2);
+    A << 1, 2,
+         3, 4,
+         5, 6;
+
+
+    matrix_product(A, B);
+
 }
 
 
