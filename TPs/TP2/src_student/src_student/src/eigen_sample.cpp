@@ -2,9 +2,11 @@
 #include <iomanip>      // std::setprecision
 #include <Eigen/Dense>
 #include <chrono>
+#include <random>
 
 void exo2_q6();
 void exo3_q2();
+void exo3_q5();
 
 double dot_product(const Eigen::VectorXd &v1, const Eigen::VectorXd &v2)
 {
@@ -28,7 +30,7 @@ Eigen::MatrixXd matrix_product(const Eigen::MatrixXd &m1, const Eigen::MatrixXd 
     {
         // si m1 a plus de colonnes que m2, dans ce cas, m2 a sûrement ce nombre de ligne
         assert(m1.cols() == m2.rows()); // on test si c'est le cas, sinon, KO
-        std::cout << "poire" << std::endl;
+        // std::cout << "poire" << std::endl;
 
 
         A = m2;
@@ -39,7 +41,7 @@ Eigen::MatrixXd matrix_product(const Eigen::MatrixXd &m1, const Eigen::MatrixXd 
     {
         // sinon, c'est le contraire
         assert(m2.cols() == m1.rows());
-        std::cout << "pomme" << std::endl;
+        // std::cout << "pomme" << std::endl;
 
         A = m1;
         B = m2;
@@ -70,7 +72,7 @@ Eigen::MatrixXd matrix_product(const Eigen::MatrixXd &m1, const Eigen::MatrixXd 
         }
     }
 
-    std::cout << res << std::endl;
+    // std::cout << res << std::endl;
 
     return res;
 }
@@ -84,7 +86,7 @@ Eigen::MatrixXd matrix_product_scalaire(const Eigen::MatrixXd &m1, const Eigen::
     {
         // si m1 a plus de colonnes que m2, dans ce cas, m2 a sûrement ce nombre de ligne
         assert(m1.cols() == m2.rows()); // on test si c'est le cas, sinon, KO
-        std::cout << "poire" << std::endl;
+        // std::cout << "poire" << std::endl;
 
 
         A = m2;
@@ -95,7 +97,7 @@ Eigen::MatrixXd matrix_product_scalaire(const Eigen::MatrixXd &m1, const Eigen::
     {
         // sinon, c'est le contraire
         assert(m2.cols() == m1.rows());
-        std::cout << "pomme" << std::endl;
+        // std::cout << "pomme" << std::endl;
 
         A = m1;
         B = m2;
@@ -116,7 +118,7 @@ Eigen::MatrixXd matrix_product_scalaire(const Eigen::MatrixXd &m1, const Eigen::
         }
     }
 
-    std::cout << res << std::endl;
+    // std::cout << res << std::endl;
 
     return res;
 }
@@ -194,9 +196,78 @@ int main()
     std::cout << "dot d'Eigen : " << x1.dot(x2) << std::endl;
 
     // exo2_q6();
-    exo3_q2();
+    // exo3_q2();
+    exo3_q5();
 
   return 0;
+}
+
+void exo3_q5()
+{
+    // fondé sur du code généré par ChatGPT
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist(-10.0, 10.0);
+
+    auto start = std :: chrono :: steady_clock :: now (); // on lance le chrono ?
+
+
+    for (int i = 0; i < 1000000; ++i)
+    {
+        // Matrice 3x2
+        Eigen::MatrixXd A(3, 2);
+
+        // Matrice 2x3
+        Eigen::MatrixXd B(2, 3);
+
+        // Génération aléatoire
+        A = A.unaryExpr([&](double) {
+            return dist(gen);
+        });
+
+        B = B.unaryExpr([&](double) {
+            return dist(gen);
+        });
+
+        // Produit : (3x2) * (2x3) = (3x3)
+        Eigen::MatrixXd C = matrix_product(A, B);
+
+    }
+
+    auto end = std::chrono::steady_clock::now(); // fin du chrono
+    std :: chrono::duration<double> elapsed_seconds = end - start ;
+    std :: cout << " elapsed time : " << elapsed_seconds . count () << " s " << std :: endl ;
+
+    start = std :: chrono :: steady_clock :: now (); // on lance le chrono ?
+
+
+    for (int i = 0; i < 1000000; ++i)
+    {
+        // Matrice 3x2
+        Eigen::MatrixXd A(3, 2);
+
+        // Matrice 2x3
+        Eigen::MatrixXd B(2, 3);
+
+        // Génération aléatoire
+        A = A.unaryExpr([&](double) {
+            return dist(gen);
+        });
+
+        B = B.unaryExpr([&](double) {
+            return dist(gen);
+        });
+
+        // Produit : (3x2) * (2x3) = (3x3)
+        Eigen::MatrixXd C = matrix_product_scalaire(A, B);
+
+    }
+
+    end = std::chrono::steady_clock::now(); // fin du chrono
+    elapsed_seconds = end - start ;
+    std :: cout << " elapsed time : " << elapsed_seconds . count () << " s " << std :: endl ;
+
+
 }
 
 void exo2_q6()
