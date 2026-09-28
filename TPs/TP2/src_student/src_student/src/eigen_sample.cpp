@@ -72,16 +72,53 @@ Eigen::MatrixXd matrix_product(const Eigen::MatrixXd &m1, const Eigen::MatrixXd 
 
     std::cout << res << std::endl;
 
+    return res;
+}
 
 
-    /*
-    std::cout << m1 << std::endl << std::endl;
-    std::cout << m2 << std::endl;
-    */
+Eigen::MatrixXd matrix_product_scalaire(const Eigen::MatrixXd &m1, const Eigen::MatrixXd &m2)
+{
+    Eigen::MatrixXd A;
+    Eigen::MatrixXd B;
+    if (m1.cols() > m2.cols())
+    {
+        // si m1 a plus de colonnes que m2, dans ce cas, m2 a sûrement ce nombre de ligne
+        assert(m1.cols() == m2.rows()); // on test si c'est le cas, sinon, KO
+        std::cout << "poire" << std::endl;
+
+
+        A = m2;
+        B = m1;
+
+    }
+    else
+    {
+        // sinon, c'est le contraire
+        assert(m2.cols() == m1.rows());
+        std::cout << "pomme" << std::endl;
+
+        A = m1;
+        B = m2;
+    }
+
+    Eigen::MatrixXd res = Eigen::MatrixXd(B.cols(), A.rows());
 
 
 
+    // on parcourt les colonnes de M2
+    for (int i = 0; i < B.cols(); i++)
+    {
 
+        // on parcourt les lignes de M1
+        for (int j = 0; j < A.rows(); j++)
+        {
+            res(j, i) = A.row(j).dot(B.col(i));
+        }
+    }
+
+    std::cout << res << std::endl;
+
+    return res;
 }
 
 int main()
@@ -210,6 +247,7 @@ void exo3_q2()
 
 
     matrix_product(A, B);
+    matrix_product_scalaire(A, B);
 
 }
 
