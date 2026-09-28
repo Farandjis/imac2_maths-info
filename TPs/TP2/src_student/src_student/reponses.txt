@@ -21,3 +21,6 @@ ne sont pas les mêmes qui seront utilisés entre les deux fonctions
 
 EXO 3
 1. Il faut que la matrice A a le même nombre de colonnes que de ligne côté matrice B
+
+4. La complexité est de n**3 (vu qu'on a une boucle dans une boucle dans une boucle) pour la version sans la méthode dot
+n² pour celle avec la méthode dot ?
