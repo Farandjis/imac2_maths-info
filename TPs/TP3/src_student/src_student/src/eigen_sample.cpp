@@ -4,9 +4,10 @@
 #include <chrono>
 #include <random>
 
-void exo2_q6();
-void exo3_q2();
-void exo3_q5();
+
+Eigen::MatrixXd generationDeMatrice();
+Eigen::MatrixXd strassen(Eigen::MatrixXd m1, Eigen::MatrixXd m2);
+
 
 double dot_product(const Eigen::VectorXd &v1, const Eigen::VectorXd &v2)
 {
@@ -195,131 +196,80 @@ int main()
 
     std::cout << "dot d'Eigen : " << x1.dot(x2) << std::endl;
 
-    // exo2_q6();
-    // exo3_q2();
-    exo3_q5();
+    Eigen::MatrixXd m1 = generationDeMatrice();
+    Eigen::MatrixXd m2 = generationDeMatrice();
+    Eigen::MatrixXd resStrassen = strassen(m1, m2);
+
+    std::cout << resStrassen << std::endl;
+
+
+
 
   return 0;
 }
 
-void exo3_q5()
+Eigen::MatrixXd generationDeMatrice()
 {
-    // fondé sur du code généré par ChatGPT
+    Eigen::MatrixXd A(8, 8);
+
+    // Générateur aléatoire
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dist(-10.0, 10.0);
 
-    auto start = std :: chrono :: steady_clock :: now (); // on lance le chrono ?
+    // Entiers aléatoires entre 0 et 100
+    std::uniform_int_distribution<int> dist(0, 100);
 
-
-    for (int i = 0; i < 1000000; ++i)
+    // Remplissage de la matrice
+    for (int i = 0; i < 8; ++i)
     {
-        // Matrice 3x2
-        Eigen::MatrixXd A(3, 2);
-
-        // Matrice 2x3
-        Eigen::MatrixXd B(2, 3);
-
-        // Génération aléatoire
-        A = A.unaryExpr([&](double) {
-            return dist(gen);
-        });
-
-        B = B.unaryExpr([&](double) {
-            return dist(gen);
-        });
-
-        // Produit : (3x2) * (2x3) = (3x3)
-        Eigen::MatrixXd C = matrix_product(A, B);
-
+        for (int j = 0; j < 8; ++j)
+        {
+            A(i, j) = dist(gen);
+        }
     }
 
-    auto end = std::chrono::steady_clock::now(); // fin du chrono
-    std :: chrono::duration<double> elapsed_seconds = end - start ;
-    std :: cout << " elapsed time : " << elapsed_seconds . count () << " s " << std :: endl ;
+    std::cout << A << std::endl;
 
-    start = std :: chrono :: steady_clock :: now (); // on lance le chrono ?
-
-
-    for (int i = 0; i < 1000000; ++i)
-    {
-        // Matrice 3x2
-        Eigen::MatrixXd A(3, 2);
-
-        // Matrice 2x3
-        Eigen::MatrixXd B(2, 3);
-
-        // Génération aléatoire
-        A = A.unaryExpr([&](double) {
-            return dist(gen);
-        });
-
-        B = B.unaryExpr([&](double) {
-            return dist(gen);
-        });
-
-        // Produit : (3x2) * (2x3) = (3x3)
-        Eigen::MatrixXd C = matrix_product_scalaire(A, B);
-
-    }
-
-    end = std::chrono::steady_clock::now(); // fin du chrono
-    elapsed_seconds = end - start ;
-    std :: cout << " elapsed time : " << elapsed_seconds . count () << " s " << std :: endl ;
-
-
-}
-
-void exo2_q6()
-{
-    const unsigned int iter = 10000;
-    auto start = std :: chrono :: steady_clock :: now (); // on lance le chrono ?
-    for ( unsigned int i =0; i < iter ; ++ i )
-    {
-        // on calcul iter fois ma fonction
-        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-        srand (seed);
-        Eigen::VectorXd x1 = Eigen::VectorXd::Random(10000);
-        Eigen::VectorXd x2 = Eigen::VectorXd::Random(10000);
-        double res = dot_product(x1, x2);
-    }
-    auto end = std::chrono::steady_clock::now(); // fin du chrono
-    std :: chrono::duration<double> elapsed_seconds = end - start ;
-    std :: cout << " elapsed time : " << elapsed_seconds . count () << " s " << std :: endl ;
-
-
-
-    start = std::chrono::steady_clock::now(); // on lance le chrono ?
-    for ( unsigned int i =0; i < iter ; ++ i )
-    {
-        // on calcul iter fois ma fonction
-        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-        srand (seed);
-        Eigen::VectorXd x1 = Eigen::VectorXd::Random(10000);
-        Eigen::VectorXd x2 = Eigen::VectorXd::Random(10000);
-        double res = x1.dot(x2);
-    }
-    end = std::chrono::steady_clock::now(); // fin du chrono
-    elapsed_seconds = end - start ;
-    std::cout << " elapsed time : " << elapsed_seconds.count () << " s " << std :: endl ;
+    return A;
 }
 
 
-void exo3_q2()
+
+Eigen::MatrixXd strassen(Eigen::MatrixXd m1, Eigen::MatrixXd m2)
 {
-    Eigen::MatrixXd B(2, 3);
-    B << 1, 2, 3,
-         3, 4, 5;
+    int n = m1.rows();
 
-    Eigen::MatrixXd A(3, 2);
-    A << 1, 2,
-         3, 4,
-         5, 6;
+    if (n <= 2)
+    {
+        return matrix_product(m1, m2);
+    }
 
+    int moitierCoter = m1.rows() / 2;
+    Eigen::MatrixXd a = m1.topLeftCorner(moitierCoter, moitierCoter);
+    Eigen::MatrixXd b = m1.topRightCorner(moitierCoter, moitierCoter);
+    Eigen::MatrixXd c = m1.bottomLeftCorner(moitierCoter, moitierCoter);
+    Eigen::MatrixXd d = m1.bottomRightCorner(moitierCoter, moitierCoter);
 
-    matrix_product(A, B);
-    matrix_product_scalaire(A, B);
+    Eigen::MatrixXd e = m2.topLeftCorner(moitierCoter, moitierCoter);
+    Eigen::MatrixXd f = m2.topRightCorner(moitierCoter, moitierCoter);
+    Eigen::MatrixXd g = m2.bottomLeftCorner(moitierCoter, moitierCoter);
+    Eigen::MatrixXd h = m2.bottomRightCorner(moitierCoter, moitierCoter);
 
+    // =========== pas bon, il faut remplacer ça par les P (cf diapo 30/61)
+    Eigen::MatrixXd r = strassen(a, e) + strassen(b,g);
+    Eigen::MatrixXd s = strassen(a,f) + strassen(b,h);
+    Eigen::MatrixXd t = strassen(c,e) + strassen(d,g);
+    Eigen::MatrixXd u = strassen(c,f) + strassen(d,h);
+    // ======================================================================
+
+    Eigen::MatrixXd M(n, n);
+
+    M.topLeftCorner(moitierCoter, moitierCoter) = r;
+    M.topRightCorner(moitierCoter, moitierCoter) = s;
+    M.bottomLeftCorner(moitierCoter, moitierCoter) = t;
+    M.bottomRightCorner(moitierCoter, moitierCoter) = u;
+
+    return M;
 }
 
 
