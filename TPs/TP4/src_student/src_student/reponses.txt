@@ -1,0 +1,30 @@
+exo 2, 1 : selon gemini
+    Pour effectuer un produit scalaire, la seule condition fondamentale est de disposer
+    de deux vecteurs appartenant au même espace vectoriel euclidien (ou préhilbertien réel),
+    c'est-à-dire un espace muni d'une structure géométrique permettant de mesurer des longueurs
+    et des angles (comme le plan ou l'espace usuel
+
+
+
+3. On obtient le même résultat
+
+5. je pensais à du O(2n) vu qu'on gère de listes, mais en réalité, nous avons qu'une seule
+boucle fort, donc on parcours une seule fois une liste de taille n : c'est du O(n)
+
+
+6. Je remarque, qu'avec ma fonction, le temps d'éxécution est aux alentours de 15sec, tandis qu'avec la méthode
+dot d'Eigen, c'est systématiquement aux alentour de 5sec.
+
+Par contre, attention, on gènère à chaque fois des noms éléatoire dans le vecteur, et ces vecteurs
+ne sont pas les mêmes qui seront utilisés entre les deux fonctions
+
+
+EXO 3
+1. Il faut que la matrice A a le même nombre de colonnes que de ligne côté matrice B
+
+4. Je déduis que :
+La complexité est de n**3 (vu qu'on a une boucle dans une boucle dans une boucle) pour la version sans la méthode dot
+n² pour celle avec la méthode dot ?
+
+5. Pour i jusqu'à 1000000,
+la version sans scalaire prend 9 à 10sec, la version avec, ~7sec
