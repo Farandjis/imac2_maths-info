@@ -7,8 +7,8 @@
 
 Eigen::MatrixXd generationDeMatrice();
 Eigen::MatrixXd strassen(Eigen::MatrixXd m1, Eigen::MatrixXd m2);
-Eigen::MatrixXd  generationMatriceAleatoire(int n);
-
+Eigen::MatrixXd generationMatriceAleatoire(int n);
+Eigen::VectorXd gaussSeidel(Eigen::MatrixXd m, Eigen::VectorXd b, size_t iterMax);
 
 double dot_product(const Eigen::VectorXd &v1, const Eigen::VectorXd &v2)
 {
@@ -181,8 +181,59 @@ int main()
 
   generationMatriceAleatoire(4);
 
+    Eigen::MatrixXd M(3,3);
+    Eigen::VectorXd b(3);
+
+    M <<  5, -3,  1,
+         -1,  6, -4,
+          3, -3,  9;
+
+    b << 10, 5, -7;
+
+    std::cout << "michel" << std::endl;
+   Eigen::VectorXd toto = gaussSeidel(M, b, 1);
+    std::cout << toto << std::endl;
+
   return 0;
 }
+
+
+Eigen::VectorXd gaussSeidel(Eigen::MatrixXd m, Eigen::VectorXd b, size_t iterMax)
+{
+
+    Eigen::VectorXd X(3);
+    X << 0, 0, 0;
+
+    for (size_t iter = 0; iter < iterMax; ++iter)
+    {
+        X[0] = (b[0] - (m(0,1) * X[1]) - (m(0,2) * X[2] )) / m(0,0);
+        X[1] = (b[1] - (m(1,0) * X[0]) - (m(1,2) * X[2] )) / m(1,1);
+        X[2] = (b[2] - (m(2,0) * X[0]) - (m(2,1) * X[1])) / m(2,2);
+    }
+
+    return X;
+
+    /*
+     *Explication du prof :
+     *On itère iter fois
+     *Dans uen autre boucle for, on parcours une à une chaque ligne et on effectue le calcul
+     *(par défaut, y(s), z(s) etc vaut 0 (cf vecteur X)
+     *on trouve X(s+1),
+     *lors du calcul de y(s+1), on utilise la nouvelle valeur X obtenu mais on a tjrs 0 en z
+     *on trouve Y(s+1)
+     *pour (z(s+1) on trouve sa valeur, paf, on a toutes nos valeurs pour X1
+     *
+     *on passe à iter++
+     *on recommence mais en partant sur les valeurs qu'on a
+     *
+     *le résultat de la méthode gauss-seidel correspond à ce qu'on obtient à la fin de l'itération
+     *
+     */
+}
+
+
+
+
 
 
 Eigen::MatrixXd  generationMatriceAleatoire(int n)
