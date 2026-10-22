@@ -37,8 +37,8 @@ class DualNumber{
 		// some operators
 		DualNumber operator*(const DualNumber &dn) const;
 		DualNumber operator+(const DualNumber &dn) const;
-		// DualNumber operator-(const DualNumber &dn) const;
-		// DualNumber operator/(const DualNumber &dn) const;
+		DualNumber operator-(const DualNumber &dn) const;
+		DualNumber operator/(const DualNumber &dn) const;
 		inline DualNumber operator/(const T &value) const {return DualNumber(m_real / value, m_dual/value);}
 		inline friend DualNumber operator*(const T &value, const DualNumber &dn) {return dn * value;}
 		inline friend DualNumber operator/(const T &value, const DualNumber &dn) {return DualNumber(value)/dn;};
@@ -69,6 +69,33 @@ std::ostream& operator<< (std::ostream& stream, const DualNumber<T> &dn){
 template <typename T>
 DualNumber<T> DualNumber<T>::operator*(const DualNumber<T> &dn) const {
 	return DualNumber<T>(this->m_real * dn.m_real, this->m_dual*dn.m_real + this->m_real*dn.m_dual);
+}
+
+/*
+ * this->m_real : a1
+ * dn.m_real : a2
+ * this->m_dual : b1
+ * dn.m_dual : b2
+ *
+ */
+
+
+template <typename T>
+DualNumber<T> DualNumber<T>::operator+(const DualNumber<T> &dn) const
+{
+	return DualNumber<T>(this->m_real + dn.m_real, this->m_dual + dn.m_dual);
+}
+
+// on met les valeurs sans le epsilon à gauche de la virgule dans le return, les trucs avec le epsilon, à droite
+template <typename T>
+DualNumber<T> DualNumber<T>::operator-(const DualNumber<T> &dn) const
+{
+	return DualNumber<T>(this->m_real - dn.m_real, this->m_dual - dn.m_dual);
+}
+
+template <typename T>
+DualNumber<T> DualNumber<T>::operator/(const DualNumber<T> &dn) const {
+	return DualNumber<T>(this->m_real / dn.m_real, (this->m_dual*dn.m_real - this->m_real*dn.m_dual) / pow(dn.m_real, 2));
 }
 
 
