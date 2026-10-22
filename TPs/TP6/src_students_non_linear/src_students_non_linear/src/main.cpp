@@ -3,8 +3,9 @@
 #include <functional>
 #include <cmath>
 #include <numbers>
+double dichotomy(std::function<double(const double&)> &f, double lowerBound, double upperBound, const unsigned int nbIterations);
 
-
+/*
 double dichotomy(std::function<double(const double&)> &f, 
                   double lowerBound, 
                   double upperBound, 
@@ -12,6 +13,7 @@ double dichotomy(std::function<double(const double&)> &f,
 
     return (lowerBound + upperBound)*0.5;
 }
+*/
 
 unsigned int dichotomyNbIteration(const double &lowerBound, const double &upperBound, const double &precision){
     return 42;
@@ -59,6 +61,27 @@ void mainNewton()
     std::cout << "Newton               : " << root << std::endl;
     std::cout << "f(root)              : " << f(root) << std::endl;
     std::cout << "nb iterations        : " << maxIterations << std::endl;
+}
+
+double dichotomy(std::function<double(const double&)> &f, double lowerBound, double upperBound, const unsigned int nbIterations)
+{
+    double a = lowerBound;
+    double b = upperBound;
+    double c = (a+b)/2;
+
+    for (int i = 1; i <= nbIterations; i++) {
+        if (f(a)*f(b) > 0) {
+            a = c;
+        }
+        else {
+            b = c;
+        }
+
+        c = (a+b)/2;
+    }
+
+    return c;
+
 }
 
 
